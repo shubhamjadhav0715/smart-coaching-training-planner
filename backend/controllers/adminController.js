@@ -2,7 +2,6 @@ const User = require('../models/User');
 const TrainingPlan = require('../models/TrainingPlan');
 const Workout = require('../models/Workout');
 
-// Get all users
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select('-password');
@@ -20,7 +19,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Get users by role
 exports.getUsersByRole = async (req, res) => {
   try {
     const { role } = req.params;
@@ -39,7 +37,6 @@ exports.getUsersByRole = async (req, res) => {
   }
 };
 
-// Update user
 exports.updateUser = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
@@ -67,7 +64,6 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// Delete user
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -91,7 +87,6 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-// Get system statistics
 exports.getSystemStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
