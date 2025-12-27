@@ -23,8 +23,8 @@ export const AuthProvider = ({ children }) => {
       if (token && storedUser) {
         try {
           setUser(JSON.parse(storedUser));
-        } catch (error) {
-          console.error('Error loading user:', error);
+        } catch (err) {
+          console.error('Error loading user:', err);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
         }
@@ -45,10 +45,10 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       
       return { success: true, user: userData };
-    } catch (error) {
+    } catch (err) {
       return {
         success: false,
-        message: error.response?.data?.message || 'Login failed'
+        message: err.response?.data?.message || 'Login failed'
       };
     }
   };
@@ -63,10 +63,10 @@ export const AuthProvider = ({ children }) => {
       setUser(newUser);
       
       return { success: true, user: newUser };
-    } catch (error) {
+    } catch (err) {
       return {
         success: false,
-        message: error.response?.data?.message || 'Registration failed'
+        message: err.response?.data?.message || 'Registration failed'
       };
     }
   };
