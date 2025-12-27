@@ -9,6 +9,19 @@ const CoachDashboard = () => {
   const [athletes, setAthletes] = useState([]);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    category: 'strength',
+    duration: {
+      weeks: 4,
+      sessionsPerWeek: 3
+    },
+    startDate: '',
+    endDate: '',
+    athleteIds: [],
+    status: 'draft'
+  });
 
   useEffect(() => {
     fetchPlans();
@@ -32,6 +45,70 @@ const CoachDashboard = () => {
       setAthletes(response.data.data);
     } catch (error) {
       toast.error('Failed to fetch athletes');
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'weeks' || name === 'sessionsPerWeek') {
+      setFormData({
+        ...formData,
+        duration: {
+          ...formData.duration,
+          [name]: parseInt(value)
+        }
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
+  };
+
+  const handleAthleteSelect = (athleteId) => {
+    const currentAthletes = formData.athleteIds;
+    if (currentAthletes.includes(athleteId)) {
+      setFormData({
+        ...formData,
+        athleteIds: currentAthletes.filter(id => id !== athleteId)
+      });
+    } else {
+      setFormData({
+        ...formData,
+        athleteIds: [...currentAthletes, athleteId]
+      });
+    }
+  };
+
+  const handleCreatePlan = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.title || !formData.description) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      await api.post('/coach/plans', formData);
+      toast.success('Training plan created successfully!');
+      setShowCreateModal(false);
+      setFormData({
+        title: '',
+        description: '',
+        category: 'strength',
+        duration: {
+          weeks: 4,
+          sessionsPerWeek: 3
+        },
+        startDate: '',
+        endDate: '',
+        athleteIds: [],
+        status: 'draft'
+      });
+      fetchPlans();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to create plan');
     }
   };
 
@@ -176,6 +253,165 @@ const CoachDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Create Plan Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{zIndex: 1000}}>
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-screen overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Create Training Plan</h2>
+            <form onSubmit={handleCreatePlan}>
+              <div className="space-y-4">
+                <div>
+                  <label className="label">Title *</label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    className="input-field"
+                    placeholder="e.g., Strength Building Program"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="label">Description *</label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    className="input-field"
+                    rows="3"
+                    placeholder="Describe the training plan..."
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Category</label>
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      className="input-field"
+                    >
+                      <option value="strength">Strength</option>
+                      <option value="endurance">Endurance</option>
+                      <option value="skills">Skills</option>
+                      <option value="flexibility">Flexibility</option>
+                      <option value="speed">Speed</option>
+                      <option value="mixed">Mixed</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="label">Status</label>
+                    <select
+                      name="status"
+                      value={formData.status}
+                      onChange={handleInputChange}
+                      className="input-field"
+                    >
+                      <option value="draft">Draft</option>
+                      <option value="active">Active</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Duration (Weeks)</label>
+                    <input
+                      type="number"
+                      name="weeks"
+                      value={formData.duration.weeks}
+                      onChange={handleInputChange}
+                      className="input-field"
+                      min="1"
+                      max="52"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="label">Sessions Per Week</label>
+                    <input
+                      type="number"
+                      name="sessionsPerWeek"
+                      value={formData.duration.sessionsPerWeek}
+                      onChange={handleInputChange}
+                      className="input-field"
+                      min="1"
+                      max="7"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Start Date</label>
+                    <input
+                      type="date"
+                      name="startDate"
+                      value={formData.startDate}
+                      onChange={handleInputChange}
+                      className="input-field"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="label">End Date</label>
+                    <input
+                      type="date"
+                      name="endDate"
+                      value={formData.endDate}
+                      onChange={handleInputChange}
+                      className="input-field"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="label">Assign Athletes</label>
+                  <div className="border rounded-lg p-3 max-h-40 overflow-y-auto">
+                    {athletes.length > 0 ? (
+                      athletes.map((athlete) => (
+                        <div key={athlete._id} className="flex items-center mb-2">
+                          <input
+                            type="checkbox"
+                            id={athlete._id}
+                            checked={formData.athleteIds.includes(athlete._id)}
+                            onChange={() => handleAthleteSelect(athlete._id)}
+                            className="mr-2"
+                          />
+                          <label htmlFor={athlete._id} className="text-sm">
+                            {athlete.name} ({athlete.email})
+                          </label>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-500">No athletes available</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex space-x-3 mt-6">
+                <button type="submit" className="btn-primary flex-1">
+                  Create Plan
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="btn-secondary flex-1"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
