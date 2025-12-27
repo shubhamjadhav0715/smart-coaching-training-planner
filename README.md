@@ -1,12 +1,9 @@
-# Smart Coaching & Training Planner
-
-## How to Run
-
-### Prerequisites
+Smart Coaching & Training Planner
+ How to Run
 - Node.js installed
 - MongoDB installed and running
 
-### Backend Setup
+Backend Setup
 
 1. Navigate to backend folder
 ```bash
@@ -55,4 +52,4 @@ Frontend will run on: http://localhost:3000
 
 Open browser and go to: http://localhost:3000
 
-Register as Coach or Athlete to get started!
+
