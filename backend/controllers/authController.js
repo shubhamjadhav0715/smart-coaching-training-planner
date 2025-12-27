@@ -36,10 +36,11 @@ exports.register = async (req, res) => {
         token
       }
     });
-  } catch (error) {
+  } catch (err) {
+    console.log('Registration error:', err);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: err.message
     });
   }
 };
@@ -85,10 +86,10 @@ exports.login = async (req, res) => {
         token
       }
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: err.message
     });
   }
 };
@@ -104,7 +105,7 @@ exports.getMe = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Could not fetch user data'
     });
   }
 };
