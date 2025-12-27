@@ -10,6 +10,17 @@ const AthleteDashboard = () => {
   const [workouts, setWorkouts] = useState([]);
   const [showLogModal, setShowLogModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [workoutData, setWorkoutData] = useState({
+    trainingPlanId: '',
+    date: new Date().toISOString().split('T')[0],
+    totalDuration: 30,
+    caloriesBurned: '',
+    difficultyRating: 5,
+    fatigueLevel: 5,
+    mood: 'good',
+    notes: '',
+    completed: true
+  });
 
   useEffect(() => {
     fetchPlans();
@@ -33,6 +44,43 @@ const AthleteDashboard = () => {
       setWorkouts(response.data.data);
     } catch (error) {
       toast.error('Failed to fetch workouts');
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setWorkoutData({
+      ...workoutData,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
+
+  const handleLogWorkout = async (e) => {
+    e.preventDefault();
+
+    if (!workoutData.totalDuration) {
+      toast.error('Please enter workout duration');
+      return;
+    }
+
+    try {
+      await api.post('/athlete/workouts', workoutData);
+      toast.success('Workout logged successfully!');
+      setShowLogModal(false);
+      setWorkoutData({
+        trainingPlanId: '',
+        date: new Date().toISOString().split('T')[0],
+        totalDuration: 30,
+        caloriesBurned: '',
+        difficultyRating: 5,
+        fatigueLevel: 5,
+        mood: 'good',
+        notes: '',
+        completed: true
+      });
+      fetchWorkouts();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to log workout');
     }
   };
 
@@ -183,6 +231,157 @@ const AthleteDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Log Workout Modal */}
+      {showLogModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4" style={{zIndex: 1000}}>
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-screen overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Log Workout</h2>
+            <form onSubmit={handleLogWorkout}>
+              <div className="space-y-4">
+                <div>
+                  <label className="label">Training Plan (Optional)</label>
+                  <select
+                    name="trainingPlanId"
+                    value={workoutData.trainingPlanId}
+                    onChange={handleInputChange}
+                    className="input-field"
+                  >
+                    <option value="">General Workout</option>
+                    {plans.map((plan) => (
+                      <option key={plan._id} value={plan._id}>
+                        {plan.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="label">Date *</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={workoutData.date}
+                    onChange={handleInputChange}
+                    className="input-field"
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Duration (minutes) *</label>
+                    <input
+                      type="number"
+                      name="totalDuration"
+                      value={workoutData.totalDuration}
+                      onChange={handleInputChange}
+                      className="input-field"
+                      min="1"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="label">Calories Burned</label>
+                    <input
+                      type="number"
+                      name="caloriesBurned"
+                      value={workoutData.caloriesBurned}
+                      onChange={handleInputChange}
+                      className="input-field"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="label">Difficulty (1-10)</label>
+                    <input
+                      type="range"
+                      name="difficultyRating"
+                      value={workoutData.difficultyRating}
+                      onChange={handleInputChange}
+                      className="w-full"
+                      min="1"
+                      max="10"
+                    />
+                    <div className="text-center text-sm font-semibold">{workoutData.difficultyRating}/10</div>
+                  </div>
+
+                  <div>
+                    <label className="label">Fatigue Level (1-10)</label>
+                    <input
+                      type="range"
+                      name="fatigueLevel"
+                      value={workoutData.fatigueLevel}
+                      onChange={handleInputChange}
+                      className="w-full"
+                      min="1"
+                      max="10"
+                    />
+                    <div className="text-center text-sm font-semibold">{workoutData.fatigueLevel}/10</div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="label">Mood</label>
+                  <select
+                    name="mood"
+                    value={workoutData.mood}
+                    onChange={handleInputChange}
+                    className="input-field"
+                  >
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                    <option value="exhausted">Exhausted</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="label">Notes</label>
+                  <textarea
+                    name="notes"
+                    value={workoutData.notes}
+                    onChange={handleInputChange}
+                    className="input-field"
+                    rows="3"
+                    placeholder="How did the workout go? Any observations..."
+                  />
+                </div>
+
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="completed"
+                    checked={workoutData.completed}
+                    onChange={handleInputChange}
+                    className="mr-2"
+                    id="completed"
+                  />
+                  <label htmlFor="completed" className="text-sm">Mark as completed</label>
+                </div>
+              </div>
+
+              <div className="flex space-x-3 mt-6">
+                <button type="submit" className="btn-primary flex-1">
+                  Log Workout
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowLogModal(false)}
+                  className="btn-secondary flex-1"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
