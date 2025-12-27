@@ -4,7 +4,6 @@ const Workout = require('../models/Workout');
 const Performance = require('../models/Performance');
 const Feedback = require('../models/Feedback');
 
-// Create training plan
 exports.createTrainingPlan = async (req, res) => {
   try {
     const planData = {
@@ -26,7 +25,6 @@ exports.createTrainingPlan = async (req, res) => {
   }
 };
 
-// Get all training plans by coach
 exports.getMyPlans = async (req, res) => {
   try {
     const plans = await TrainingPlan.find({ coachId: req.user.id })
@@ -46,7 +44,6 @@ exports.getMyPlans = async (req, res) => {
   }
 };
 
-// Get single training plan
 exports.getPlan = async (req, res) => {
   try {
     const plan = await TrainingPlan.findById(req.params.id)
@@ -72,7 +69,6 @@ exports.getPlan = async (req, res) => {
   }
 };
 
-// Update training plan
 exports.updatePlan = async (req, res) => {
   try {
     let plan = await TrainingPlan.findById(req.params.id);
@@ -109,7 +105,6 @@ exports.updatePlan = async (req, res) => {
   }
 };
 
-// Delete training plan
 exports.deletePlan = async (req, res) => {
   try {
     const plan = await TrainingPlan.findById(req.params.id);
@@ -142,7 +137,6 @@ exports.deletePlan = async (req, res) => {
   }
 };
 
-// Get my athletes
 exports.getMyAthletes = async (req, res) => {
   try {
     const athletes = await User.find({ 
@@ -163,7 +157,6 @@ exports.getMyAthletes = async (req, res) => {
   }
 };
 
-// Get athlete progress
 exports.getAthleteProgress = async (req, res) => {
   try {
     const { athleteId } = req.params;
@@ -191,7 +184,6 @@ exports.getAthleteProgress = async (req, res) => {
   }
 };
 
-// Respond to feedback
 exports.respondToFeedback = async (req, res) => {
   try {
     const { message } = req.body;
