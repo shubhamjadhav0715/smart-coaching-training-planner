@@ -3,7 +3,6 @@ const Workout = require('../models/Workout');
 const Performance = require('../models/Performance');
 const Feedback = require('../models/Feedback');
 
-// Get assigned training plans
 exports.getMyTrainingPlans = async (req, res) => {
   try {
     const plans = await TrainingPlan.find({ 
@@ -24,7 +23,6 @@ exports.getMyTrainingPlans = async (req, res) => {
   }
 };
 
-// Log workout
 exports.logWorkout = async (req, res) => {
   try {
     const workoutData = {
@@ -46,7 +44,6 @@ exports.logWorkout = async (req, res) => {
   }
 };
 
-// Get my workouts
 exports.getMyWorkouts = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
@@ -77,7 +74,6 @@ exports.getMyWorkouts = async (req, res) => {
   }
 };
 
-// Update workout
 exports.updateWorkout = async (req, res) => {
   try {
     let workout = await Workout.findById(req.params.id);
@@ -114,7 +110,6 @@ exports.updateWorkout = async (req, res) => {
   }
 };
 
-// Log performance metrics
 exports.logPerformance = async (req, res) => {
   try {
     const performanceData = {
@@ -136,7 +131,6 @@ exports.logPerformance = async (req, res) => {
   }
 };
 
-// Get my performance history
 exports.getMyPerformance = async (req, res) => {
   try {
     const performance = await Performance.find({ athleteId: req.user.id })
@@ -156,7 +150,6 @@ exports.getMyPerformance = async (req, res) => {
   }
 };
 
-// Submit feedback
 exports.submitFeedback = async (req, res) => {
   try {
     const feedbackData = {
@@ -178,7 +171,6 @@ exports.submitFeedback = async (req, res) => {
   }
 };
 
-// Get my feedback
 exports.getMyFeedback = async (req, res) => {
   try {
     const feedback = await Feedback.find({ athleteId: req.user.id })
