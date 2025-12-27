@@ -15,10 +15,10 @@ exports.getMyTrainingPlans = async (req, res) => {
       count: plans.length,
       data: plans
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Could not fetch training plans'
     });
   }
 };
@@ -37,6 +37,7 @@ exports.logWorkout = async (req, res) => {
       data: workout
     });
   } catch (error) {
+    console.log('Workout logging error:', error);
     res.status(500).json({
       success: false,
       message: error.message
@@ -66,10 +67,10 @@ exports.getMyWorkouts = async (req, res) => {
       count: workouts.length,
       data: workouts
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: err.message
     });
   }
 };
@@ -103,10 +104,7 @@ exports.updateWorkout = async (req, res) => {
       data: workout
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -123,10 +121,10 @@ exports.logPerformance = async (req, res) => {
       success: true,
       data: performance
     });
-  } catch (error) {
+  } catch (e) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to log performance'
     });
   }
 };
@@ -163,10 +161,10 @@ exports.submitFeedback = async (req, res) => {
       success: true,
       data: feedback
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: err.message
     });
   }
 };
@@ -185,7 +183,7 @@ exports.getMyFeedback = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Could not fetch feedback'
     });
   }
 };
