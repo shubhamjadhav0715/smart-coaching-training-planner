@@ -1,117 +1,58 @@
 # Smart Coaching & Training Planner
 
-A full-stack MERN application for managing sports training programs. Coaches can create personalized training plans, and athletes can track their workouts and progress.
-
-## Features
-
-- **Admin Dashboard**: Manage users, view system statistics
-- **Coach Dashboard**: Create training plans, assign to athletes, track progress
-- **Athlete Dashboard**: View assigned plans, log workouts, track performance
-- **Authentication**: Secure JWT-based authentication with role-based access
-- **Real-time Updates**: Dynamic data updates across all dashboards
-
-## Tech Stack
-
-- **Frontend**: React.js, React Router, Axios
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Authentication**: JWT & bcrypt
-
-## Quick Start
+## How to Run
 
 ### Prerequisites
-- Node.js (v14+)
-- MongoDB (local or Atlas)
+- Node.js installed
+- MongoDB installed and running
 
-### Installation
+### Backend Setup
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/shubhamjadhav0715/smart-coaching-training-planner.git
-cd smart-coaching-training-planner
-```
-
-2. **Setup Backend**
+1. Navigate to backend folder
 ```bash
 cd backend
+```
+
+2. Install dependencies
+```bash
 npm install
+```
+
+3. Create .env file
+```bash
 cp .env.example .env
-# Edit .env with your MongoDB URI
+```
+
+4. Edit .env file with your MongoDB connection string
+
+5. Start backend server
+```bash
 npm run dev
 ```
 
-3. **Setup Frontend** (in new terminal)
+Backend will run on: http://localhost:5000
+
+### Frontend Setup
+
+1. Open new terminal and navigate to frontend folder
 ```bash
 cd frontend
+```
+
+2. Install dependencies
+```bash
 npm install
+```
+
+3. Start frontend
+```bash
 npm start
 ```
 
-4. **Access the app**
-- Frontend: http://localhost:3000
-- Backend: http://localhost:5000
+Frontend will run on: http://localhost:3000
 
-## Default Credentials
+### Access the Application
 
-Register as Coach or Athlete. For Admin access, manually update user role in MongoDB:
+Open browser and go to: http://localhost:3000
 
-```javascript
-db.users.updateOne(
-  { email: "your-email@example.com" },
-  { $set: { role: "admin" } }
-)
-```
-
-## Project Structure
-
-```
-├── backend/
-│   ├── config/         # Database configuration
-│   ├── controllers/    # Business logic
-│   ├── middleware/     # Auth & validation
-│   ├── models/         # MongoDB schemas
-│   ├── routes/         # API endpoints
-│   └── server.js       # Entry point
-├── frontend/
-│   ├── src/
-│   │   ├── components/ # Reusable components
-│   │   ├── context/    # React context
-│   │   ├── pages/      # Dashboard pages
-│   │   └── utils/      # Helper functions
-│   └── package.json
-└── README.md
-```
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user
-
-### Coach
-- `POST /api/coach/plans` - Create training plan
-- `GET /api/coach/plans` - Get all plans
-- `GET /api/coach/athletes` - Get assigned athletes
-
-### Athlete
-- `GET /api/athlete/plans` - Get assigned plans
-- `POST /api/athlete/workouts` - Log workout
-- `GET /api/athlete/workouts` - Get workout history
-
-### Admin
-- `GET /api/admin/users` - Get all users
-- `GET /api/admin/stats` - Get system statistics
-- `DELETE /api/admin/users/:id` - Delete user
-
-## Contributing
-
-Pull requests are welcome! For major changes, please open an issue first.
-
-## License
-
-MIT
-
-## Author
-
-Shubham Jadhav - [GitHub](https://github.com/shubhamjadhav0715)
+Register as Coach or Athlete to get started!
