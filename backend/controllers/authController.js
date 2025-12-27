@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const { generateToken } = require('../middleware/auth');
 
-// Register user
 exports.register = async (req, res) => {
   try {
     const { name, email, password, role, phone, dateOfBirth, gender, sportsCategory } = req.body;
@@ -45,7 +44,6 @@ exports.register = async (req, res) => {
   }
 };
 
-// Login user
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -95,7 +93,6 @@ exports.login = async (req, res) => {
   }
 };
 
-// Get current user
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
