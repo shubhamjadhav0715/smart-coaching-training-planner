@@ -1,9 +1,9 @@
-# ⚡ Quick Start Reference
+# ⚡ AthleteIQ - Quick Start Reference
 
 ## 🔑 Default Admin Credentials
 
 ```
-Email:    admin@smartcoaching.com
+Email:    admin@athleteiq.com
 Password: admin123
 ```
 
@@ -76,7 +76,7 @@ POST http://localhost:5000/api/auth/register
 POST http://localhost:5000/api/auth/login
 
 {
-  "email": "admin@smartcoaching.com",
+  "email": "admin@athleteiq.com",
   "password": "admin123"
 }
 ```
@@ -139,7 +139,7 @@ Authorization: Bearer <athlete_token>
 Create `backend/.env`:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/smart-coaching
+MONGODB_URI=mongodb://localhost:27017/athleteiq
 JWT_SECRET=your_secret_key_here
 JWT_EXPIRE=7d
 NODE_ENV=development
@@ -177,7 +177,7 @@ FRONTEND_URL=http://localhost:3000
 mongod
 
 # Or use MongoDB Atlas
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/dbname
+MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/athleteiq
 ```
 
 **Port already in use?**
@@ -194,3 +194,5 @@ lsof -ti:5000 | xargs kill -9
 ---
 
 **🎉 Ready to go! Login at http://localhost:3000**
+
+**Welcome to AthleteIQ - Smart Coaching Platform** 🏆
