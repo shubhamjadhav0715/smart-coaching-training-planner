@@ -24,7 +24,8 @@ app.use('/api/athlete', require('./routes/athlete'));
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'Smart Coaching API is running',
+    message: 'AthleteIQ API is running',
+    version: '1.0.0',
     timestamp: new Date().toISOString()
   });
 });
@@ -47,5 +48,6 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(`🚀 AthleteIQ Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  console.log(`📊 API Health Check: http://localhost:${PORT}/api/health`);
 });
