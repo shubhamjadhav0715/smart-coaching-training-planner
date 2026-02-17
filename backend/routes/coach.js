@@ -8,7 +8,8 @@ const {
   deletePlan,
   getMyAthletes,
   getAthleteProgress,
-  respondToFeedback
+  respondToFeedback,
+  downloadPlanReport
 } = require('../controllers/coachController');
 const { protect } = require('../middleware/auth');
 const { authorize } = require('../middleware/roleCheck');
@@ -25,6 +26,7 @@ router.route('/plans/:id')
   .put(updatePlan)
   .delete(deletePlan);
 
+router.get('/plans/:id/download', downloadPlanReport);
 router.get('/athletes', getMyAthletes);
 router.get('/athletes/:athleteId/progress', getAthleteProgress);
 router.put('/feedback/:id/respond', respondToFeedback);
