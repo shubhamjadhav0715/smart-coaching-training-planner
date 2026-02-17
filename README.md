@@ -1,10 +1,10 @@
-# Smart Coaching & Training Planner
+# AthleteIQ - Smart Coaching & Training Platform
 
 <img width="1919" height="1020" alt="image" src="https://github.com/user-attachments/assets/8b01e49c-7663-41d5-be6b-69457761b496" />
 
 ## Introduction
 
-The **Smart Coaching & Training Planner** is a web-based sports management application developed using the MERN stack that helps coaches plan, monitor, and optimize athlete training programs. Instead of using manual training charts and verbal instructions, coaches can create personalized training schedules, assign drills, and track player performance digitally. Athletes can log their daily workouts, view assigned plans, and provide feedback, enabling data-driven coaching and performance improvement.
+**AthleteIQ** is an intelligent web-based sports management application developed using the MERN stack that helps coaches plan, monitor, and optimize athlete training programs. Instead of using manual training charts and verbal instructions, coaches can create personalized training schedules, assign drills, and track player performance digitally. Athletes can log their daily workouts, view assigned plans, and provide feedback, enabling data-driven coaching and performance improvement.
 
 ## Technology Stack
 
@@ -25,20 +25,26 @@ The **Smart Coaching & Training Planner** is a web-based sports management appli
 - Assign workouts and drills to individual athletes or teams
 - Track athlete progress using performance metrics and graphs
 - Provide feedback and adjust training plans accordingly
+- Send automated email notifications to athletes
+- Download comprehensive PDF training reports
 
 ### 3. Athlete Module
 - Secure login to view assigned training schedules
 - Log daily workouts and performance data
 - Track progress and improvement history
 - Submit feedback on training difficulty and fatigue levels
+- View detailed analytics and performance trends
+- Download personal training reports
 
 ## Additional Features
 
-- Progress visualization using charts and analytics
-- Training reminders via email or notifications
-- Injury prevention tracking and rest-day planning
-- Export training reports in PDF/Excel format
-- Mobile-friendly design for on-field access
+- **Progress visualization** using charts and analytics
+- **Training reminders** via email notifications
+- **Injury prevention** tracking and rest-day planning
+- **Export training reports** in PDF format
+- **Mobile-friendly** design for on-field access
+- **Real-time analytics** for performance tracking
+- **Automated notifications** for plan assignments and feedback
 
 ## How to Run
 
@@ -65,7 +71,12 @@ cp .env.example .env
 
 4. Edit .env file with your MongoDB connection string
 
-5. Start backend server
+5. Create admin user (first time only)
+```bash
+npm run seed:admin
+```
+
+6. Start backend server
 ```bash
 npm run dev
 ```
@@ -95,6 +106,21 @@ Frontend will run on: http://localhost:3000
 
 Open browser and go to: http://localhost:3000
 
+**Default Admin Credentials:**
+```
+Email: admin@athleteiq.com
+Password: admin123
+```
+
+⚠️ **Change password after first login!**
+
+## 📚 Documentation
+
+- **Quick Start Guide:** See `QUICK_START.md`
+- **Complete Setup Guide:** See `SETUP_GUIDE.md`
+- **API Documentation:** See `API_DOCUMENTATION.md`
+- **Bug Fixes & Features:** See `BUGFIXES.md`
+
 ## Screenshots
 
 1. **Dashboard Overview**
@@ -111,4 +137,8 @@ Open browser and go to: http://localhost:3000
 
 ## Conclusion
 
-The Smart Coaching & Training Planner provides a structured, digital approach to sports training management. By leveraging the MERN stack, it enhances communication between coaches and athletes, supports data-driven decisions, and helps improve athletic performance through organized training and progress tracking.
+**AthleteIQ** provides a structured, digital approach to sports training management. By leveraging the MERN stack and intelligent analytics, it enhances communication between coaches and athletes, supports data-driven decisions, and helps improve athletic performance through organized training and progress tracking.
+
+---
+
+**Built with ❤️ using the MERN Stack**
