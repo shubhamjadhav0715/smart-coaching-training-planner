@@ -9,17 +9,17 @@ const seedAdmin = async () => {
   try {
     await connectDB();
 
-    const adminExists = await User.findOne({ email: 'admin@smartcoaching.com' });
+    const adminExists = await User.findOne({ email: 'admin@athleteiq.com' });
 
     if (adminExists) {
       console.log('❌ Admin user already exists!');
-      console.log('Email: admin@smartcoaching.com');
+      console.log('Email: admin@athleteiq.com');
       process.exit(0);
     }
 
     const admin = await User.create({
-      name: 'Admin User',
-      email: 'admin@smartcoaching.com',
+      name: 'AthleteIQ Admin',
+      email: 'admin@athleteiq.com',
       password: 'admin123',
       role: 'admin',
       phone: '1234567890',
@@ -28,11 +28,13 @@ const seedAdmin = async () => {
 
     console.log('✅ Admin user created successfully!');
     console.log('==========================================');
-    console.log('Email: admin@smartcoaching.com');
+    console.log('Email: admin@athleteiq.com');
     console.log('Password: admin123');
     console.log('Role: admin');
     console.log('==========================================');
     console.log('⚠️  IMPORTANT: Change the password after first login!');
+    console.log('');
+    console.log('🎉 Welcome to AthleteIQ - Smart Coaching Platform');
     
     process.exit(0);
   } catch (error) {
