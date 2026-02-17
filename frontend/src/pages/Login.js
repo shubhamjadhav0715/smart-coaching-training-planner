@@ -27,7 +27,7 @@ const Login = () => {
     const result = await login(formData.email, formData.password);
     
     if (result.success) {
-      toast.success('Login successful!');
+      toast.success('Welcome to AthleteIQ!');
       navigate(`/${result.user.role}`);
     } else {
       toast.error(result.message);
@@ -40,10 +40,13 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Smart Coaching & Training
+          <h2 className="mt-6 text-center text-4xl font-extrabold text-blue-600">
+            AthleteIQ
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-600 font-medium">
+            Smart Coaching Platform
+          </p>
+          <p className="mt-4 text-center text-lg text-gray-700">
             Sign in to your account
           </p>
         </div>
@@ -100,6 +103,12 @@ const Login = () => {
             </Link>
           </div>
         </form>
+        
+        <div className="mt-6 text-center">
+          <p className="text-xs text-gray-500">
+            © 2024 AthleteIQ. All rights reserved.
+          </p>
+        </div>
       </div>
     </div>
   );
