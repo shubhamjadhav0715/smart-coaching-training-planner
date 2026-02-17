@@ -3,6 +3,8 @@ const User = require('../models/User');
 const Workout = require('../models/Workout');
 const Performance = require('../models/Performance');
 const Feedback = require('../models/Feedback');
+const { sendPlanAssignment, sendFeedbackResponse } = require('../utils/emailService');
+const { generatePlanReport } = require('../utils/pdfService');
 
 exports.createTrainingPlan = async (req, res) => {
   try {
@@ -13,9 +15,24 @@ exports.createTrainingPlan = async (req, res) => {
 
     const plan = await TrainingPlan.create(planData);
 
+    if (plan.athleteIds && plan.athleteIds.length > 0) {
+      const athletes = await User.find({ _id: { $in: plan.athleteIds } });
+      
+      for (const athlete of athletes) {
+        await sendPlanAssignment(athlete.email, athlete.name, {
+          title: plan.title,
+          category: plan.category,
+          duration: plan.duration,
+          startDate: plan.startDate,
+          description: plan.description
+        });
+      }
+    }
+
     res.status(201).json({
       success: true,
-      data: plan
+      data: plan,
+      message: 'Training plan created and athletes notified'
     });
   } catch (err) {
     console.log(err);
@@ -167,9 +184,20 @@ exports.getAthleteProgress = async (req, res) => {
       .sort('-date')
       .limit(10);
 
+    const totalWorkouts = await Workout.countDocuments({ athleteId });
+    const totalDuration = workouts.reduce((sum, w) => sum + (w.totalDuration || 0), 0);
+    const avgDifficulty = workouts.length > 0
+      ? workouts.reduce((sum, w) => sum + (w.difficultyRating || 0), 0) / workouts.length
+      : 0;
+
     res.status(200).json({
       success: true,
       data: {
+        summary: {
+          totalWorkouts,
+          totalDuration: Math.round(totalDuration / 60),
+          avgDifficulty: avgDifficulty.toFixed(1)
+        },
         workouts,
         performance
       }
@@ -186,7 +214,8 @@ exports.respondToFeedback = async (req, res) => {
   try {
     const { message } = req.body;
     
-    const feedback = await Feedback.findById(req.params.id);
+    const feedback = await Feedback.findById(req.params.id)
+      .populate('athleteId', 'name email');
 
     if (!feedback) {
       return res.status(404).json({
@@ -210,10 +239,59 @@ exports.respondToFeedback = async (req, res) => {
 
     await feedback.save();
 
+    await sendFeedbackResponse(
+      feedback.athleteId.email,
+      feedback.athleteId.name,
+      {
+        originalMessage: feedback.message,
+        response: message
+      }
+    );
+
     res.status(200).json({
       success: true,
-      data: feedback
+      data: feedback,
+      message: 'Response sent and athlete notified'
     });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+exports.downloadPlanReport = async (req, res) => {
+  try {
+    const plan = await TrainingPlan.findById(req.params.id)
+      .populate('athleteIds', 'name email sportsCategory');
+
+    if (!plan) {
+      return res.status(404).json({
+        success: false,
+        message: 'Training plan not found'
+      });
+    }
+
+    if (plan.coachId.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized'
+      });
+    }
+
+    const result = await generatePlanReport(plan, plan.athleteIds);
+
+    if (result.success) {
+      res.download(result.filePath, result.fileName, (err) => {
+        if (err) {
+          console.error('Download error:', err);
+          res.status(500).json({ success: false, message: 'Error downloading file' });
+        }
+      });
+    } else {
+      res.status(500).json({ success: false, message: 'Failed to generate report' });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
