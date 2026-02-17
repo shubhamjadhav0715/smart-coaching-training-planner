@@ -140,5 +140,7 @@ Password: admin123
 **AthleteIQ** provides a structured, digital approach to sports training management. By leveraging the MERN stack and intelligent analytics, it enhances communication between coaches and athletes, supports data-driven decisions, and helps improve athletic performance through organized training and progress tracking.
 
 ---
+Email: admin@athleteiq.com
+Password: admin123
 
 **Built with ❤️ using the MERN Stack**
