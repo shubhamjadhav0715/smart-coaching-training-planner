@@ -94,7 +94,8 @@ const AthleteDashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Athlete Dashboard</h1>
+              <h1 className="text-2xl font-bold text-blue-600">AthleteIQ</h1>
+              <span className="ml-3 text-sm text-gray-600">Athlete Dashboard</span>
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-gray-700">Welcome, {user?.name}</span>
@@ -229,6 +230,12 @@ const AthleteDashboard = () => {
               No workouts logged yet. Start tracking your progress!
             </p>
           )}
+        </div>
+
+        <div className="mt-8 text-center">
+          <p className="text-sm text-gray-500">
+            © 2026 AthleteIQ - Smart Coaching Platform
+          </p>
         </div>
       </div>
 
