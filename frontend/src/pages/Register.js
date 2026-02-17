@@ -168,7 +168,7 @@ const Register = () => {
         
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-500">
-            © 2024 AthleteIQ. All rights reserved.
+            © 2026 AthleteIQ. All rights reserved.
           </p>
         </div>
       </div>
